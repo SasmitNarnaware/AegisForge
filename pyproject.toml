@@ -1,0 +1,33 @@
+[build-system]
+requires = ["hatchling==1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "aegisforge"
+version = "0.1.0"
+description = "A deterministic, sandboxed multi-agent cybersecurity foundation."
+readme = "README.md"
+requires-python = ">=3.11,<3.12"
+dependencies = [
+    "langgraph==0.6.11",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==8.4.1",
+    "ruff==0.12.10",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/aegisforge"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
