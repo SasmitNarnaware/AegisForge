@@ -3,17 +3,47 @@
 from __future__ import annotations
 
 from ..context import RuntimeContext
-from ..domain import ActionKind, PolicyDecision, SecurityPolicy
+from ..domain import ActionKind, PolicyDecision, SecurityPolicy, ThreatDetection
 from ..state import RunState
 
 
 class PolicyEnforcerAgent:
     name = "policy_enforcer"
     system_prompt = (
-        "You create and enforce explicit security policies. Allow only typed defensive "
-        "actions in the in-memory sandbox. Reject unknown action types or requests to "
-        "escape the sandbox."
+        "You are a policy architect and enforcement gate. Turn observed threat patterns into "
+        "specific, minimally scoped controls. Block unsafe operations by default, preserve "
+        "an explainable reason, and never weaken a control to make an attack succeed."
     )
+
+    def generate_policy(
+        self, detection: ThreatDetection, context: RuntimeContext
+    ) -> SecurityPolicy:
+        """Generate one targeted policy from a Blue Team detection."""
+
+        controls = {
+            "prompt_injection": (
+                "Reject instruction overrides and keep system policy higher priority.",
+                "block_prompt_override",
+            ),
+            "tool_misuse": (
+                "Require explicit allowlisting and approval before privileged tool use.",
+                "block_unapproved_tool",
+            ),
+            "data_exfiltration": (
+                "Deny outbound data transfer and redact protected records by default.",
+                "block_data_egress",
+            ),
+        }
+        statement, enforcement = controls[detection.threat_type]
+        policy = SecurityPolicy(
+            policy_id=f"dynamic-{detection.attack_id}",
+            statement=statement,
+            allowed_action_kinds=("set_control", "record_observation"),
+            trigger=f"{detection.threat_type} score {detection.score}/100",
+            enforcement=enforcement,
+        )
+        context.audit.record(self.name, "policy_generated", policy.policy_id)
+        return policy
 
     def run(self, state: RunState, context: RuntimeContext) -> dict[str, object]:
         policies = [

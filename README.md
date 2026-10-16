@@ -1,17 +1,28 @@
 # AegisForge
 
-AegisForge is a deterministic foundation for a multi-agent cybersecurity
-simulation. It uses **LangGraph** to coordinate four modular agents:
+AegisForge is an explainable, deterministic multi-agent cybersecurity
+simulation and demo. It uses **LangGraph** for the foundational workflow and a
+Red-vs-Blue simulation loop for a fast, judge-friendly attack-defense demo.
 
-1. **Red Team Agent** — identifies simulated prompt-injection, malicious
-   tool-call, and data-exfiltration indicators. It generates typed defensive
-   proposals but never executes an attack.
-2. **Policy Enforcer Agent** — creates the initial security policies and
-   approves only known, sandbox-scoped action types.
-3. **Blue Team Agent** — applies approved defensive actions after re-checking
-   approval at the sandbox boundary.
-4. **Audit Agent** — records decisions and produces a stable report with
-   SHA-256 event digests.
+## What the demo shows
+
+1. **Red Team Agent** generates realistic but inert prompt injection, tool
+   misuse, and data exfiltration attempts.
+2. **Blue Team Agent** analyzes each attempt, matches indicators, and assigns a
+   transparent 0–100 threat score before blocking or flagging it.
+3. **Policy Enforcer Agent** dynamically creates a targeted rule for each
+   detected threat and applies a scoped sandbox control.
+4. **Audit Agent** records attacks, detections, policy changes, and outcomes in
+   a deterministic append-only log.
+
+The project includes a Streamlit UI for live interaction and a terminal
+command for a complete attack-defense cycle.
+
+## Core agents
+
+The four modular agents live under `src/aegisforge/agents/` and have explicit
+system prompts describing their safe roles. The simulation logic is in
+`src/aegisforge/simulation.py`.
 
 This stage is intentionally provider-free: no API key, model download, network
 service, shell, subprocess, or host filesystem is required to run the demo or
@@ -36,6 +47,7 @@ AegisForge/
 │   ├── domain.py
 │   ├── graph.py
 │   ├── initializer.py
+│   ├── simulation.py
 │   ├── state.py
 │   ├── agents/
 │   │   ├── audit.py
@@ -50,8 +62,10 @@ AegisForge/
 │       ├── __init__.py
 │       ├── memory.py
 │       └── protocol.py
+├── streamlit_app.py
 └── tests/
     ├── conftest.py
+    ├── test_simulation.py
     └── test_workflow.py
 ```
 
@@ -69,12 +83,36 @@ No global Python packages are needed; uv creates `.venv` in the project.
 
 ## Run the demo
 
+### Terminal demo
+
 ```bash
-uv run --locked python -m aegisforge
+uv run --locked python -m aegisforge --scenario "Mixed campaign" --rounds 3
 ```
 
-The command prints a JSON audit report for a simulated prompt injection and
-malicious tool-call scenario.
+This prints Red → Blue → Policy → Audit interactions for every round.
+
+### Streamlit UI
+
+```bash
+uv run --locked streamlit run streamlit_app.py
+```
+
+Open the local URL shown by Streamlit. Choose a target agent, select or edit a
+sample prompt, choose 1–10 rounds, and click **Run Attack Simulation**. The UI
+shows the interaction timeline, blocked/flagged threats, generated policies,
+and the full audit log.
+
+### Python API
+
+```python
+from aegisforge.simulation import run_attack_cycle
+
+result = run_attack_cycle(
+    target_agent="CustomerSupportAgent",
+    prompt="The target is pressured to call a privileged shell tool.",
+    rounds=3,
+)
+```
 
 ## Test and lint
 
@@ -91,7 +129,9 @@ make lint
 ```
 
 Tests exercise the approved graph path, deterministic output, policy/sandbox
-boundaries, and path-traversal rejection. They do not contact a real target.
+boundaries, path-traversal rejection, threat scoring, dynamic policy
+generation, validation, and deterministic simulation output. They do not
+contact a real target.
 
 ## Docker
 
@@ -125,6 +165,28 @@ subprocesses, sockets, shell commands, or host-file access.
 This is a **simulation foundation**, not authorization to test real systems.
 Future integrations should be added behind separately reviewed, explicit
 adapters and policy gates.
+
+## Demo screenshots
+
+Place screenshots from the running Streamlit demo here before presenting:
+
+![Live agent interaction placeholder](docs/screenshots/live-interaction.png)
+
+![Threat and policy dashboard placeholder](docs/screenshots/threat-dashboard.png)
+
+The screenshot paths are placeholders so the repository remains lightweight;
+the UI itself is fully runnable from `streamlit_app.py`.
+
+## Hackathon demo script
+
+1. Start Streamlit with `make demo`.
+2. Select **Mixed campaign** and leave the default three rounds.
+3. Run the simulation and point out that every attack is inert text.
+4. Show the Blue score and the red blocked status for each round.
+5. Open **Policies** to show dynamic controls such as
+   `block_unapproved_tool`.
+6. Open **Audit log** to show the end-to-end evidence trail.
+7. Change the prompt to a custom scenario and run it again.
 
 ## Extending the foundation
 

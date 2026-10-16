@@ -1,8 +1,8 @@
-"""Small, typed domain objects shared by agents and the graph.
+"""Typed domain objects shared by the graph, simulation, and demo UI.
 
-The first stage intentionally uses dataclasses instead of provider-specific
-message objects. This keeps the orchestration deterministic and makes it safe
-to replace the rule-based agents with model-backed adapters later.
+The foundation stays provider-free and deterministic. Every interaction is
+represented as data first, which keeps the simulation safe to replay and easy
+to replace with a model-backed adapter later.
 """
 
 from __future__ import annotations
@@ -12,6 +12,7 @@ from typing import Literal
 
 Severity = Literal["low", "medium", "high", "critical"]
 ActionKind = Literal["set_control", "write_file", "record_observation"]
+AttackType = Literal["prompt_injection", "tool_misuse", "data_exfiltration"]
 
 
 @dataclass(frozen=True)
@@ -21,6 +22,31 @@ class Scenario:
     scenario_id: str
     description: str
     seed: int = 0
+
+
+@dataclass(frozen=True)
+class AttackAttempt:
+    """A simulated, non-executing adversarial message."""
+
+    attack_id: str
+    attack_type: AttackType
+    target_agent: str
+    payload: str
+    intent: str
+    round_number: int
+
+
+@dataclass(frozen=True)
+class ThreatDetection:
+    """Blue Team's scored assessment of one simulated attack."""
+
+    attack_id: str
+    threat_type: AttackType
+    score: int
+    severity: Severity
+    indicators: tuple[str, ...]
+    action: Literal["blocked", "flagged", "allowed"]
+    rationale: str
 
 
 @dataclass(frozen=True)
@@ -47,6 +73,8 @@ class SecurityPolicy:
     policy_id: str
     statement: str
     allowed_action_kinds: tuple[ActionKind, ...]
+    trigger: str = "baseline"
+    enforcement: str = "log"
 
 
 @dataclass(frozen=True)
@@ -70,6 +98,21 @@ class AuditEvent:
     agent: str
     event_type: str
     detail: str
+
+
+@dataclass(frozen=True)
+class SimulationResult:
+    """Complete output of a Red-vs-Blue simulation run."""
+
+    target_agent: str
+    prompt: str
+    rounds: int
+    attacks: tuple[AttackAttempt, ...]
+    detections: tuple[ThreatDetection, ...]
+    policies: tuple[SecurityPolicy, ...]
+    changes: tuple[Change, ...]
+    events: tuple[AuditEvent, ...]
+    report: AuditReport
 
 
 @dataclass(frozen=True)
