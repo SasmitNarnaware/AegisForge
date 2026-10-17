@@ -168,14 +168,18 @@ adapters and policy gates.
 
 ## Demo screenshots
 
-Place screenshots from the running Streamlit demo here before presenting:
+The repository includes judge-ready screenshots of the Streamlit demo:
 
-![Live agent interaction placeholder](docs/screenshots/live-interaction.png)
+### Live agent interaction
 
-![Threat and policy dashboard placeholder](docs/screenshots/threat-dashboard.png)
+![AegisForge live agent interaction dashboard](docs/screenshots/live-interaction.svg)
 
-The screenshot paths are placeholders so the repository remains lightweight;
-the UI itself is fully runnable from `streamlit_app.py`.
+### Threats, policies, and audit evidence
+
+![AegisForge threat and audit dashboard](docs/screenshots/threat-dashboard.svg)
+
+These visuals mirror the rendered UI flow. To launch the interactive version
+locally, run `make demo` and open the URL printed by Streamlit.
 
 ## Hackathon demo script
 

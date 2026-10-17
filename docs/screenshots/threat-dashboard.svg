@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AegisForge threat and audit dashboard</title>
+  <desc id="desc">AegisForge dashboard showing threat cards, dynamic policies, and audit events.</desc>
+  <rect width="1440" height="900" fill="#0b1020"/>
+  <rect x="0" y="0" width="310" height="900" fill="#111827"/>
+  <rect x="310" y="0" width="1130" height="900" fill="#0f172a"/>
+  <text x="34" y="54" fill="#f8fafc" font-family="Arial, sans-serif" font-size="30" font-weight="700">🛡 AegisForge</text>
+  <text x="34" y="82" fill="#94a3b8" font-family="Arial, sans-serif" font-size="14">Demo scenario</text>
+  <rect x="34" y="110" width="242" height="44" rx="6" fill="#1e293b" stroke="#475569"/>
+  <text x="50" y="138" fill="#f8fafc" font-family="Arial, sans-serif" font-size="14">Mixed campaign</text>
+  <rect x="34" y="178" width="242" height="48" rx="7" fill="#2563eb"/>
+  <text x="62" y="208" fill="#ffffff" font-family="Arial, sans-serif" font-size="15" font-weight="700">Run Attack Simulation</text>
+  <text x="350" y="62" fill="#f8fafc" font-family="Arial, sans-serif" font-size="32" font-weight="700">Defense intelligence</text>
+  <text x="350" y="94" fill="#94a3b8" font-family="Arial, sans-serif" font-size="17">Threats, policies, and evidence from the completed cycle</text>
+  <rect x="350" y="130" width="1052" height="48" rx="8" fill="#052e16" stroke="#16a34a"/>
+  <text x="372" y="160" fill="#bbf7d0" font-family="Arial, sans-serif" font-size="14">✓ Defense cycle complete — every simulated threat was blocked.</text>
+  <text x="350" y="224" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="16" font-weight="700">🚨 Detected threats</text>
+  <g>
+    <rect x="350" y="248" width="330" height="130" rx="8" fill="#2a1015" stroke="#7f1d1d"/>
+    <text x="372" y="278" fill="#fecaca" font-family="Arial, sans-serif" font-size="14" font-weight="700">CRITICAL · 100/100</text>
+    <text x="372" y="307" fill="#ffffff" font-family="Arial, sans-serif" font-size="16">Tool misuse</text>
+    <text x="372" y="335" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="12">privileged · shell tool</text>
+    <text x="372" y="357" fill="#86efac" font-family="Arial, sans-serif" font-size="12">BLOCKED</text>
+    <rect x="700" y="248" width="330" height="130" rx="8" fill="#2a1015" stroke="#7f1d1d"/>
+    <text x="722" y="278" fill="#fecaca" font-family="Arial, sans-serif" font-size="14" font-weight="700">CRITICAL · 100/100</text>
+    <text x="722" y="307" fill="#ffffff" font-family="Arial, sans-serif" font-size="16">Data exfiltration</text>
+    <text x="722" y="335" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="12">credential · upload</text>
+    <text x="722" y="357" fill="#86efac" font-family="Arial, sans-serif" font-size="12">BLOCKED</text>
+    <rect x="1050" y="248" width="352" height="130" rx="8" fill="#2a1015" stroke="#7f1d1d"/>
+    <text x="1072" y="278" fill="#fecaca" font-family="Arial, sans-serif" font-size="14" font-weight="700">CRITICAL · 100/100</text>
+    <text x="1072" y="307" fill="#ffffff" font-family="Arial, sans-serif" font-size="16">Prompt injection</text>
+    <text x="1072" y="335" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="12">ignore · system prompt · reveal</text>
+    <text x="1072" y="357" fill="#86efac" font-family="Arial, sans-serif" font-size="12">BLOCKED</text>
+  </g>
+  <text x="350" y="430" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="16" font-weight="700">📜 Generated security policies</text>
+  <rect x="350" y="454" width="1052" height="68" rx="8" fill="#172554" stroke="#1d4ed8"/>
+  <text x="372" y="482" fill="#bfdbfe" font-family="Arial, sans-serif" font-size="14" font-weight="700">dynamic-attack-r01-tool_misuse · block_unapproved_tool</text>
+  <text x="372" y="505" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="12">Require explicit allowlisting and approval before privileged tool use.</text>
+  <rect x="350" y="536" width="1052" height="68" rx="8" fill="#172554" stroke="#1d4ed8"/>
+  <text x="372" y="564" fill="#bfdbfe" font-family="Arial, sans-serif" font-size="14" font-weight="700">dynamic-attack-r02-data_exfiltration · block_data_egress</text>
+  <text x="372" y="587" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="12">Deny outbound data transfer and redact protected records by default.</text>
+  <rect x="350" y="618" width="1052" height="68" rx="8" fill="#172554" stroke="#1d4ed8"/>
+  <text x="372" y="646" fill="#bfdbfe" font-family="Arial, sans-serif" font-size="14" font-weight="700">dynamic-attack-r03-prompt_injection · block_prompt_override</text>
+  <text x="372" y="669" fill="#cbd5e1" font-family="Arial, sans-serif" font-size="12">Reject instruction overrides and keep system policy higher priority.</text>
+  <text x="350" y="742" fill="#e2e8f0" font-family="Arial, sans-serif" font-size="16" font-weight="700">🧾 Audit log</text>
+  <rect x="350" y="766" width="1052" height="74" rx="8" fill="#111c33" stroke="#334155"/>
+  <text x="372" y="793" fill="#94a3b8" font-family="monospace" font-size="12">01 red_team · attack_generated · attack-r01-tool_misuse</text>
+  <text x="372" y="815" fill="#94a3b8" font-family="monospace" font-size="12">02 blue_team · threat_detected · attack-r01-tool_misuse: blocked (100/100)</text>
+  <text x="890" y="815" fill="#94a3b8" font-family="monospace" font-size="12">… 13 events total</text>
+</svg>
